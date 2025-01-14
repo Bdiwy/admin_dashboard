@@ -1,0 +1,43 @@
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+background: transparent; /* Make the track transparent */
+border-radius: 3px; /* Rounded corners for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #cfcdcd31; /* Color of the scrollbar thumb */
+border-radius: 3px; /* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #55555526; /* Color of the thumb on hover */
+}
+
+/* Hide scrollbar buttons (arrows) */
+.custom-scrollbar::-webkit-scrollbar-button {
+display: none; /* Completely remove the scrollbar buttons */
+}
+
+/* Hide scrollbar when not in use */
+.custom-scrollbar {
+scrollbar-width: thin; /* Makes the scrollbar thinner (for Firefox) */
+scrollbar-color: #888 transparent; /* Thumb color and transparent track */
+}
+
+.custom-scrollbar:hover {
+scrollbar-color: #88888842 #f1f1f165; /* Show the scrollbar on hover (for Firefox) */
+}
+
+/* Ensure the scrollbar is hidden by default and appears on hover */
+.custom-scrollbar {
+overflow-y: auto; /* Ensure the scrollbar is enabled */
+scrollbar-gutter: stable; /* Prevent layout shift when scrollbar appears */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+background: #8888882d; /* Show the thumb on hover */
+}
