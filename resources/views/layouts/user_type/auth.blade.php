@@ -54,7 +54,4 @@
 
         @include('components.fixed-plugin')
     @endif
-
-    
-
 @endsection
