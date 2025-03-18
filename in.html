@@ -1,0 +1,163 @@
+<!-- Add this modal HTML before the scripts section -->
+<div class="modal fade" id="hotelModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hotelName"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="hotelCarousel" class="carousel slide mb-4">
+                    <div class="carousel-inner">
+                        <!-- Carousel items will be added dynamically -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#hotelCarousel">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#hotelCarousel">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>Details</h4>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="text-primary fs-4" id="hotelPrice"></span>/night
+                                <div class="text-warning" id="hotelRating"></div>
+                            </div>
+                            <div id="hotelAmenities"></div>
+                        </div>
+                        <p>A luxurious resort offering premium amenities and exceptional service. Perfect for both leisure and business travelers.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Book Your Stay</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Check-in Date</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Check-out Date</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                    Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registrationForm">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register & Book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this script modification -->
+<script>
+// Update the existing script with these modifications
+$(function() {
+    // ... existing code ...
+
+    // View Deal click handler
+    $('.hotel-card').on('click', '.btn-primary', function() {
+        const card = $(this).closest('.hotel-card');
+        const hotelName = card.find('.card-title').text();
+        const price = card.data('price');
+        const rating = card.data('rating');
+        const amenities = card.data('amenities').split(' ');
+
+        // Set modal content
+        $('#hotelName').text(hotelName);
+        $('#hotelPrice').text('$' + price);
+        $('#hotelRating').html('★'.repeat(rating));
+        
+        // Set amenities
+        const amenitiesHtml = amenities.map(a => 
+            `<span class="badge bg-primary me-1">${a}</span>`
+        ).join('');
+        $('#hotelAmenities').html(amenitiesHtml);
+
+        // Set carousel images (using placeholder, replace with actual images)
+        const carouselInner = $('#hotelCarousel .carousel-inner');
+        carouselInner.empty();
+        for(let i = 0; i < 3; i++) {
+            carouselInner.append(`
+                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                    <img src="https://via.placeholder.com/800x400" class="d-block w-100">
+                </div>
+            `);
+        }
+
+        // Show modal
+        new bootstrap.Modal(document.getElementById('hotelModal')).show();
+    });
+
+    // Registration form submission
+    $('#registrationForm').submit(function(e) {
+        e.preventDefault();
+        alert('Registration successful! Redirecting to payment...');
+        $('#registerModal').modal('hide');
+        $('#hotelModal').modal('hide');
+    });
+});
+</script>
+
+<!-- Add this CSS -->
+<style>
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.modal-body .card {
+    position: sticky;
+    top: 20px;
+}
+
+.badge {
+    text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 200px;
+    }
+    
+    .modal-body .card {
+        position: static;
+        margin-top: 20px;
+    }
+}
+</style>
