@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\StaticController;
 use App\Http\Controllers\Auth\GuestController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\StaticController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->controller(GuestController::class)->group(function () {
     Route::get('/register', 'register')->name('register');
     Route::post('/register', 'store');
-    Route::get('/login', 'l
-    
-login.store');
+    Route::get('/login', 'login.store')->name('login');
     Route::get('/forgot-password', 'forgotPassword')->name('password.request');
     Route::post('/forgot-password', 'sendResetLink')->name('password.email');
     Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');
@@ -43,3 +42,9 @@ Route::controller(StaticController::class)->group(function () {
     Route::get('/static-sign-in', 'signIn')->name('static.sign-in');
     Route::get('/static-sign-up', 'signUp')->name('static.sign-up');
 });
+
+
+// App Routes
+Route::get('/', [HotelController::class, 'index'])->name('hotels.index');
+Route::get('/hotels/search', [HotelController::class, 'search'])->name('hotels.search');
+Route::post('/bookings', [HotelController::class, 'storeBooking'])->name('bookings.store');

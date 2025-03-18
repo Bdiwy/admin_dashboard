@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuestController extends Controller
 {
     public function register()
     {
-        return view('auth.register'); // Assuming you have this view
+        return view('auth.register');
     }
 
     public function store(Request $request)
     {
-        // Registration logic here
+        // Registration logic (use Laravel's built-in if preferred)
     }
 
     public function login()
@@ -24,7 +25,7 @@ class GuestController extends Controller
 
     public function authenticate(Request $request)
     {
-        // Login logic here
+        // Authentication logic
     }
 
     public function forgotPassword()
@@ -34,7 +35,7 @@ class GuestController extends Controller
 
     public function sendResetLink(Request $request)
     {
-        // Send reset link logic
+        // Password reset link logic
     }
 
     public function resetPassword(string $token)
@@ -45,5 +46,11 @@ class GuestController extends Controller
     public function updatePassword(Request $request)
     {
         // Update password logic
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('hotels.index');
     }
 }
