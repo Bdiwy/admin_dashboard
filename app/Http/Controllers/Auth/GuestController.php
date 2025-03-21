@@ -20,7 +20,7 @@ class GuestController extends Controller
 
     public function login()
     {
-        return view('auth.login');
+        return view('session.login-session');
     }
 
     public function authenticate(Request $request)
