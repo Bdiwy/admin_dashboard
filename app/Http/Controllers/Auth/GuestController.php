@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class GuestController extends Controller
 {
+    private $root = 'website';
+    public function home()
+    {
+        return view('website.index');
+    }
     public function register()
     {
         return view('auth.register');

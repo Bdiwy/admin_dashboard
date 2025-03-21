@@ -1,369 +1,761 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelFinder - Book Your Perfect Stay</title>
-    <!-- CSRF Token for Laravel Forms -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery UI CSS -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    @vite(['resources/css/app.css']) <!-- Assuming you're using Vite for asset management -->
-    <style>
-        .navbar {
-            background-color: #003580;
-        }
-        .search-container {
-            margin-top: -40px;
-            position: relative;
-            z-index: 1000;
-        }
-        .price-slider .ui-slider-handle {
-            width: 20px;
-            height: 20px;
-            top: -8px;
-            border-radius: 50%;
-        }
-        .hotel-card {
-            transition: transform 0.2s;
-        }
-        .hotel-card:hover {
-            transform: translateY(-5px);
-        }
-        .carousel-item img {
-            height: 400px;
-            object-fit: cover;
-        }
-        .modal-body .card {
-            position: sticky;
-            top: 20px;
-        }
-        .badge {
-            text-transform: capitalize;
-        }
-        @media (max-width: 768px) {
-            .carousel-item img { height: 200px; }
-            .modal-body .card { position: static; margin-top: 20px; }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crowny Hotel</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 </head>
-<body class="bg-light">
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand fs-3 fw-bold" href="{{ route('hotels.index') }}">TravelFinder</a>
-            <div class="d-flex align-items-center text-white">
-                @guest
-                    <a href="{{ route('login') }}" class="me-3 text-white text-decoration-none">Sign in</a>
-                    <a href="{{ route('register') }}" class="text-white text-decoration-none">Register</a>
-                @else
-                    <span class="me-3">{{ Auth::user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-link text-white text-decoration-none p-0">Logout</button>
-                    </form>
-                @endguest
-            </div>
-        </div>
-    </nav>
 
-    <!-- Search Form -->
-    <div class="container search-container">
-        <div class="card shadow-lg">
-            <div class="card-body">
-                <form id="searchForm" action="{{ route('hotels.search') }}" method="GET">
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <input type="text" name="destination" class="form-control" 
-                                   value="{{ request('destination', 'New York') }}" placeholder="Destination">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" name="checkin" class="form-control datepicker" id="checkin" 
-                                   value="{{ request('checkin', now()->addDay()->format('Y-m-d')) }}" placeholder="Check-in">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" name="checkout" class="form-control datepicker" id="checkout" 
-                                   value="{{ request('checkout', now()->addDays(2)->format('Y-m-d')) }}" placeholder="Check-out">
-                        </div>
-                        <div class="col-md-3">
-                            <select name="adults" class="form-select">
-                                @foreach ([1, 2, 3] as $num)
-                                    <option value="{{ $num }}" {{ request('adults', 2) == $num ? 'selected' : '' }}>
-                                        {{ $num }} Adult{{ $num > 1 ? 's' : '' }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary w-100">Search</button>
-                        </div>
-                    </div>
-                </form>
+<body>
+
+
+  <header>
+    <div class="content flex_space">
+      <div class="logo">
+        <img src="images/logo.png" alt="">
+      </div>
+      <div class="navlinks">
+        <ul id="menulist">
+          <li><a href="#home">home</a> </li>
+          <li><a href="#about">about</a> </li>
+          <li><a href="#rooms">rooms</a> </li>
+          <li><a href="#pages">pages</a> </li>
+          <li><a href="#news">news</a> </li>
+          <li><a href="#contact">contact</a> </li>
+          <li> <i class="fa fa-search"></i> </li>
+          <li> <button class="primary-btn">BOOK NOW</button> </li>
+        </ul>
+        <span class="fa fa-bars" onclick="menutoggle()"></span>
+      </div>
+    </div>
+  </header>
+
+
+  <script>
+    var menulist = document.getElementById('menulist');
+    menulist.style.maxHeight = "0px";
+
+    function menutoggle() {
+      if (menulist.style.maxHeight == "0px") {
+        menulist.style.maxHeight = "100vh";
+      } else {
+        menulist.style.maxHeight = "0px";
+      }
+    }
+  </script>
+
+
+  <section class="home">
+    <div class="content">
+      <div class="owl-carousel owl-theme">
+        <div class="item">
+          <img src="images/banner-1.png" alt="">
+          <div class="text">
+            <h1>Spend Your Holiday</h1>
+            <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+            </p>
+            <div class="flex">
+              <button class="primary-btn">READ MORE</button>
+              <button class="secondary-btn">CONTACT US</button>
             </div>
+          </div>
         </div>
+        <div class="item">
+          <img src="images/banner-2.png" alt="">
+          <div class="text">
+            <h1>Spend Your Holiday</h1>
+            <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+            </p>
+            <div class="flex">
+              <button class="primary-btn">READ MORE</button>
+              <button class="secondary-btn">CONTACT US</button>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/banner-3.png" alt="">
+          <div class="text">
+            <h1>Spend Your Holiday</h1>
+            <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+            </p>
+            <div class="flex">
+              <button class="primary-btn">READ MORE</button>
+              <button class="secondary-btn">CONTACT US</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+  <script>
+    $('.owl-carousel').owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: true,
+      dots: false,
+      navText: ["<i class = 'fa fa-chevron-left'></i>", "<i class = 'fa fa-chevron-right'></i>"],
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 1
+        },
+        1000: {
+          items: 1
+        }
+      }
+    })
+  </script>
+
+
+
+
+  <section class="book">
+    <div class="container flex_space">
+      <div class="text">
+        <h1> <span>Book </span> Your Rooms </h1>
+      </div>
+      <div class="form">
+        <form class="grid">
+          <input type="date" placeholder="Araival Date">
+          <input type="date" placeholder="Departure Date">
+          <input type="number" placeholder="Adults">
+          <input type="number" placeholder="Childern">
+          <input type="submit" value="CHECK AVAILABILITY">
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="about top">
+    <div class="container flex">
+      <div class="left">
+        <div class="heading">
+          <h1>WELCOME</h1>
+          <h2>Crowny Hotel</h2>
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+          aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <button class="primary-btn">ABOUT US</button>
+      </div>
+      <div class="right">
+        <img src="images/about.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="counter top">
+    <div class="container grid">
+      <div class="box">
+        <h1>2500</h1>
+        <hr>
+        <span>Customer</span>
+      </div>
+      <div class="box">
+        <h1>1250</h1>
+        <hr>
+        <span>Happy Customer</span>
+      </div>
+      <div class="box">
+        <h1>150</h1>
+        <hr>
+        <span>Expert Technicians</span>
+      </div>
+      <div class="box">
+        <h1>3550</h1>
+        <hr>
+        <span>Desktop Reaired</span>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="rooms">
+    <div class="container top">
+      <div class="heading">
+        <h1>EXPOLRE</h1>
+        <h2>Our Rooms</h2>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        </p>
+      </div>
+
+      <div class="content mtop">
+        <div class="owl-carousel owl-carousel1 owl-theme">
+          <div class="items">
+            <div class="image">
+              <img src="images/room-1.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-2.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-3.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-4.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-5.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-6.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-7.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/room-8.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Suporior Rooms</h2>
+              <div class="rate flex">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+              <div class="button flex">
+                <button class="primary-btn">BOOK NOW</button>
+                <h3>$250 <span> <br> Per Night </span> </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    $('.owl-carousel1').owlCarousel({
+      loop: true,
+      margin: 40,
+      nav: true,
+      dots: false,
+      navText: ["<i class = 'fa fa-chevron-left'></i>", "<i class = 'fa fa-chevron-right'></i>"],
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 2,
+          margin: 10,
+        },
+        1000: {
+          items: 3
+        }
+      }
+    })
+  </script>
+
+
+
+  <section class="gallery">
+    <div class="container top">
+      <div class="heading">
+        <h1>PHOTOS</h1>
+        <h2>Our Gallery</h2>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row g-4">
-            <!-- Filters -->
-            <div class="col-lg-3">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">Filters</h5>
-                        <div class="mb-4">
-                            <h6 class="fw-bold mb-3">Price Range</h6>
-                            <div id="price-slider" class="price-slider"></div>
-                            <div id="price-values" class="mt-2 text-muted small"></div>
-                        </div>
-                        <div class="mb-4">
-                            <h6 class="fw-bold mb-3">Star Rating</h6>
-                            @foreach ([5, 4, 3] as $stars)
-                                <div class="form-check">
-                                    <input class="form-check-input star-rating" type="checkbox" 
-                                           name="rating[]" value="{{ $stars }}" id="rating{{ $stars }}"
-                                           {{ in_array($stars, request('rating', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="rating{{ $stars }}">{{ str_repeat('★', $stars) }}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="mb-4">
-                            <h6 class="fw-bold mb-3">Amenities</h6>
-                            @foreach (['wifi' => 'Free WiFi', 'pool' => 'Swimming Pool', 'parking' => 'Free Parking'] as $value => $label)
-                                <div class="form-check">
-                                    <input class="form-check-input amenity" type="checkbox" 
-                                           name="amenities[]" value="{{ $value }}" id="{{ $value }}"
-                                           {{ in_array($value, request('amenities', ['wifi'])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="{{ $value }}">{{ $label }}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Results -->
-            <div class="col-lg-9">
-                <div class="row g-4">
-                    @foreach ($hotels as $hotel)
-                        <div class="col-12 hotel-card" 
-                             data-price="{{ $hotel['price'] }}" 
-                             data-rating="{{ $hotel['rating'] }}" 
-                             data-amenities="{{ implode(' ', $hotel['amenities']) }}">
-                            <div class="card shadow-sm h-100">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="{{ $hotel['image'] ?? 'https://via.placeholder.com/300x200' }}" 
-                                             class="img-fluid rounded-start" alt="{{ $hotel['name'] }}">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body d-flex flex-column h-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="card-title">{{ $hotel['name'] }}</h5>
-                                                <span class="text-primary fs-5">${{ $hotel['price'] }}/night</span>
-                                            </div>
-                                            <div class="mb-2 text-warning">{{ str_repeat('★', $hotel['rating']) }}</div>
-                                            <ul class="list-inline mb-3">
-                                                @foreach ($hotel['amenities'] as $amenity)
-                                                    <li class="list-inline-item">{{ $amenity }}</li>
-                                                @endforeach
-                                            </ul>
-                                            <button class="btn btn-primary mt-auto align-self-start view-deal" 
-                                                    data-hotel="{{ json_encode($hotel) }}">View Deal</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+    <div class="content mtop">
+      <div class="owl-carousel owl-carousel1 owl-theme">
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-1.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
         </div>
-    </div>
-
-    <!-- Hotel Modal -->
-    <div class="modal fade" id="hotelModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="hotelName"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="hotelCarousel" class="carousel slide mb-4">
-                        <div class="carousel-inner"></div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#hotelCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#hotelCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h4>Details</h4>
-                            <div class="d-flex justify-content-between mb-3">
-                                <div>
-                                    <span class="text-primary fs-4" id="hotelPrice"></span>/night
-                                    <div class="text-warning" id="hotelRating"></div>
-                                </div>
-                                <div id="hotelAmenities"></div>
-                            </div>
-                            <p>{{ $hotelDescription ?? 'A luxurious resort offering premium amenities and exceptional service.' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Book Your Stay</h5>
-                                    <form action="{{ route('bookings.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="hotel_id" id="hotelId">
-                                        <div class="mb-3">
-                                            <label class="form-label">Check-in Date</label>
-                                            <input type="date" name="checkin" class="form-control" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Check-out Date</label>
-                                            <input type="date" name="checkout" class="form-control" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Book Now</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-2.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
         </div>
-    </div>
-
-    <!-- Registration Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('register') }}" method="POST" id="registrationForm">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" name="name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Register & Book</button>
-                    </form>
-                </div>
-            </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-3.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
         </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-4.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-5.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-6.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-4.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-3.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-1.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+        <div class="items">
+          <div class="img">
+            <img src="images/gallery-6.png" alt="">
+          </div>
+          <div class="overlay">
+            <span class="fa fa-plus"> </span>
+            <h3>Photo Title Here.</h3>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Scripts -->
-    @vite(['resources/js/app.js'])
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(function() {
-            // Datepicker
-            $(".datepicker").datepicker({
-                minDate: 0,
-                dateFormat: 'yy-mm-dd'
-            });
 
-            // Price Slider
-            $("#price-slider").slider({
-                range: true,
-                min: 0,
-                max: 500,
-                values: [{{ request('price_min', 100) }}, {{ request('price_max', 300) }}],
-                slide: function(event, ui) {
-                    $("#price-values").text("$" + ui.values[0] + " - $" + ui.values[1]);
-                    filterResults();
-                }
-            });
-            $("#price-values").text("$" + $("#price-slider").slider("values", 0) + " - $" + $("#price-slider").slider("values", 1));
+  <script>
+    $('.owl-carousel1').owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: true,
+      dots: false,
+      autoplay: true,
+      autoplayTimeout: 1000,
+      autoplayHoverPause: true,
+      navText: ["<i class = 'fa fa-chevron-left'></i>", "<i class = 'fa fa-chevron-right'></i>"],
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 4,
+        },
+        1000: {
+          items: 6
+        }
+      }
+    })
+  </script>
 
-            // Filter Handling
-            $(".star-rating, .amenity").change(filterResults);
 
-            function filterResults() {
-                const minPrice = $("#price-slider").slider("values", 0);
-                const maxPrice = $("#price-slider").slider("values", 1);
-                const selectedStars = $(".star-rating:checked").map(function() { return parseInt($(this).val()); }).get();
-                const selectedAmenities = $(".amenity:checked").map(function() { return $(this).val(); }).get();
+  <section class="services top">
+    <div class="container">
+      <div class="heading">
+        <h1>SERVICES</h1>
+        <h2>Our Services</h2>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      </div>
 
-                $(".hotel-card").each(function() {
-                    const price = parseInt($(this).data("price"));
-                    const rating = parseInt($(this).data("rating"));
-                    const amenities = $(this).data("amenities").split(" ");
-                    const priceMatch = price >= minPrice && price <= maxPrice;
-                    const ratingMatch = selectedStars.length === 0 || selectedStars.includes(rating);
-                    const amenitiesMatch = selectedAmenities.length === 0 || selectedAmenities.every(a => amenities.includes(a));
 
-                    $(this).toggle(priceMatch && ratingMatch && amenitiesMatch);
-                });
-            }
+      <div class="content flex_space">
+        <div class="left grid2">
+          <div class="box">
+            <div class="text">
+              <i class="fa-solid fa-champagne-glasses"></i>
+              <h3>Delious Food</h3>
+            </div>
+          </div>
+          <div class="box">
+            <div class="text">
+              <i class="fa-solid fa-person-biking"></i>
+              <h3>Fintness</h3>
+            </div>
+          </div>
+          <div class="box">
+            <div class="text">
+              <i class="fa-solid fa-utensils"></i>
+              <h3>Inhouse Restaurant</h3>
+            </div>
+          </div>
+          <div class="box">
+            <div class="text">
+              <i class="fa-solid fa-spa"></i>
+              <h3>Beauty Spa</h3>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <img src="images/service.png" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
 
-            // View Deal
-            $('.view-deal').click(function() {
-                const hotel = JSON.parse($(this).data('hotel'));
-                $('#hotelName').text(hotel.name);
-                $('#hotelPrice').text('$' + hotel.price);
-                $('#hotelRating').html('★'.repeat(hotel.rating));
-                $('#hotelId').val(hotel.id || 1); // Assuming hotel has an ID
-                const amenitiesHtml = hotel.amenities.map(a => `<span class="badge bg-primary me-1">${a}</span>`).join('');
-                $('#hotelAmenities').html(amenitiesHtml);
 
-                const carouselInner = $('#hotelCarousel .carousel-inner');
-                carouselInner.empty();
-                const images = hotel.images || ['https://via.placeholder.com/800x400'];
-                images.forEach((img, i) => {
-                    carouselInner.append(`
-                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                            <img src="${img}" class="d-block w-100">
-                        </div>
-                    `);
-                });
 
-                new bootstrap.Modal(document.getElementById('hotelModal')).show();
-            });
 
-            // Form Submission
-            $("#searchForm").submit(function(e) {
-                // Let Laravel handle the GET request
-            });
+  <section class="Customer top">
+    <div class="container">
+      <div class="owl-carousel owl-carousel2 owl-theme">
+        <div class="item">
+          <i class="fa-solid fa-quote-right"></i>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <h3>Julia Robertson</h3>
+          <label>Julia Robertson</label>
+        </div>
+        <div class="item">
+          <i class="fa-solid fa-quote-right"></i>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <h3>Julia Robertson</h3>
+          <label>Julia Robertson</label>
+        </div>
+        <div class="item">
+          <i class="fa-solid fa-quote-right"></i>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <h3>Julia Robertson</h3>
+          <label>Julia Robertson</label>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    $('.owl-carousel2').owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: false,
+      dots: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 1,
+        },
+        1000: {
+          items: 1
+        }
+      }
+    })
+  </script>
 
-            // Registration Form
-            $('#registrationForm').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function() {
-                        alert('Registration successful! Please login to complete booking.');
-                        $('#registerModal').modal('hide');
-                        $('#hotelModal').modal('hide');
-                        window.location.href = '{{ route('login') }}';
-                    },
-                    error: function(xhr) {
-                        alert('Registration failed: ' + xhr.responseJSON.message);
-                    }
-                });
-            });
-        });
-    </script>
+
+
+  <section class="news top rooms">
+    <div class="container">
+      <div class="heading">
+        <h1>NEWS</h1>
+        <h2>Our News</h2>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+      </div>
+
+
+      <div class="content flex">
+        <div class="left grid2">
+          <div class="items">
+            <div class="image">
+              <img src="images/blog-1.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Finibus bonorum malorm.</h2>
+              <div class="admin flex">
+                <i class="fa fa-user"></i>
+                <label>Admin</label>
+                <i class="fa fa-heart"></i>
+                <label>500</label>
+                <i class="fa fa-comments"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+          <div class="items">
+            <div class="image">
+              <img src="images/blog-2.png" alt="">
+            </div>
+            <div class="text">
+              <h2>Finibus bonorum malorm.</h2>
+              <div class="admin flex">
+                <i class="fa fa-user"></i>
+                <label>Admin</label>
+                <i class="fa fa-heart"></i>
+                <label>500</label>
+                <i class="fa fa-comments"></i>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="box flex">
+            <div class="img">
+              <img src="images/blog-s1.png" alt="">
+            </div>
+            <div class="stext">
+              <h2>Etiam Vel Nequ</h2>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+            </div>
+          </div>
+          <div class="box flex">
+            <div class="img">
+              <img src="images/blog-s2.png" alt="">
+            </div>
+            <div class="stext">
+              <h2>Etiam Vel Nequ</h2>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+            </div>
+          </div>
+          <div class="box flex">
+            <div class="img">
+              <img src="images/blog-s3.png" alt="">
+            </div>
+            <div class="stext">
+              <h2>Etiam Vel Nequ</h2>
+              <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="newsletter mtop">
+    <div class="container flex_space">
+      <h1>Subscribe to Our Newsletter</h1>
+      <input type="text" placeholder="Your Email">
+      <input type="text" value="Subscribe">
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="container grid">
+      <div class="box">
+        <img src="images/logo-2.png" alt="">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+          aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <div class="icon">
+          <i class="fa fa-facebook-f"></i>
+          <i class="fa fa-instagram"></i>
+          <i class="fa fa-twitter"></i>
+          <i class="fa fa-youtube"></i>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Links</h2>
+        <ul>
+          <li>Company History</li>
+          <li>About Us</li>
+          <li>Contact Us</li>
+          <li>Services</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <h2>Contact Us</h2>
+        <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
+        </p>
+        <i class="fa fa-location-dot"></i>
+        <label>1201 park street, Avenue, Dhanmondy, Dhaka. </label> <br>
+        <i class="fa fa-phone"></i>
+        <label>[88] 657 524 332</label> <br>
+        <i class="fa fa-envelope"></i>
+        <label>info@dentar.com</label> <br>
+      </div>
+    </div>
+  </footer>
+
+  <div class="legal">
+    <p class="container">Copyright (c) 2022 Copyright Holder All Rights Reserved.</p>
+  </div>
+
+
+
+  <script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
