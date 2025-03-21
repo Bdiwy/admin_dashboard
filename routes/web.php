@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\StaticController;
 use App\Http\Controllers\Auth\GuestController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Website\HomeController;
+use App\Http\Controllers\Website\HotelController;
+use App\Http\Controllers\Website\StaticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,18 +22,6 @@ Route::middleware('guest')->controller(GuestController::class)->group(function (
     Route::post('/forgot-password', 'sendResetLink')->name('password.email');
     Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');
     Route::post('/reset-password', 'updatePassword')->name('password.update');
-});
-
-// Authenticated Routes (Dashboard)
-Route::prefix('dashboard')->middleware('auth')->controller(DashboardController::class)->group(function () {
-    Route::get('/', 'home')->name('dashboard');
-    Route::get('/billing', 'billing')->name('billing');
-    Route::get('/profile', 'profile')->name('profile');
-    Route::get('/user-management', 'userManagement')->name('user-management');
-    Route::get('/tables', 'tables')->name('tables');
-    Route::get('/user-profile', 'userProfile')->name('profile.create');
-    Route::post('/user-profile', 'storeProfile')->name('profile.store');
-    // Logout moved outside dashboard prefix for consistency
 });
 
 // Static Routes (Optional)
