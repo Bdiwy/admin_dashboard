@@ -1,55 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+@extends('layouts.website.app')
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crowny Hotel</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous"
-    referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-</head>
+@section('title', 'Crowny Hotel')
 
-<body>
-
-
-  <header>
-    <div class="content flex_space">
-      <div class="logo">
-        <img src="images/logo.png" alt="">
-      </div>
-      <div class="navlinks">
-        <ul id="menulist">
-          <li><a href="#home">home</a> </li>
-          <li><a href="#about">about</a> </li>
-          <li><a href="#rooms">rooms</a> </li>
-          <li><a href="#pages">pages</a> </li>
-          <li><a href="#news">news</a> </li>
-          <li><a href="#contact">contact</a> </li>
-          <li> <i class="fa fa-search"></i> </li>
-          <li> <button class="primary-btn">BOOK NOW</button> </li>
-        </ul>
-        <span class="fa fa-bars" onclick="menutoggle()"></span>
-      </div>
-    </div>
-  </header>
-
-
-  <script>
-    var menulist = document.getElementById('menulist');
-    menulist.style.maxHeight = "0px";
-
-    function menutoggle() {
-      if (menulist.style.maxHeight == "0px") {
-        menulist.style.maxHeight = "100vh";
-      } else {
-        menulist.style.maxHeight = "0px";
-      }
-    }
-  </script>
+@section('content')
 
 
   <section class="home">
@@ -708,54 +661,47 @@
     </div>
   </section>
 
+@endsection
 
-  <footer>
-    <div class="container grid">
-      <div class="box">
-        <img src="images/logo-2.png" alt="">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-          aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+@section('scripts')
+    <script>
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 0,
+            nav: true,
+            dots: false,
+            navText: ["<i class = 'fa fa-chevron-left'></i>", "<i class = 'fa fa-chevron-right'></i>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 1
+                },
+                1000: {
+                    items: 1
+                }
+            }
+        });
 
-        <div class="icon">
-          <i class="fa fa-facebook-f"></i>
-          <i class="fa fa-instagram"></i>
-          <i class="fa fa-twitter"></i>
-          <i class="fa fa-youtube"></i>
-        </div>
-      </div>
-
-      <div class="box">
-        <h2>Links</h2>
-        <ul>
-          <li>Company History</li>
-          <li>About Us</li>
-          <li>Contact Us</li>
-          <li>Services</li>
-          <li>Privacy Policy</li>
-        </ul>
-      </div>
-
-      <div class="box">
-        <h2>Contact Us</h2>
-        <p>Lorem ipsum dolor sit amet constur adipisicing elit sed do eiusmtem por incid.
-        </p>
-        <i class="fa fa-location-dot"></i>
-        <label>1201 park street, Avenue, Dhanmondy, Dhaka. </label> <br>
-        <i class="fa fa-phone"></i>
-        <label>[88] 657 524 332</label> <br>
-        <i class="fa fa-envelope"></i>
-        <label>info@dentar.com</label> <br>
-      </div>
-    </div>
-  </footer>
-
-  <div class="legal">
-    <p class="container">Copyright (c) 2022 Copyright Holder All Rights Reserved.</p>
-  </div>
-
-
-
-  <script src="https://kit.fontawesome.com/032d11eac3.js" crossorigin="anonymous"></script>
-</body>
-
-</html>
+        $('.owl-carousel1').owlCarousel({
+            loop: true,
+            margin: 40,
+            nav: true,
+            dots: false,
+            navText: ["<i class = 'fa fa-chevron-left'></i>", "<i class = 'fa fa-chevron-right'></i>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2,
+                    margin: 10,
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        });
+    </script>
+@endsection
