@@ -10,7 +10,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 */
 
 // Authenticated Routes (Dashboard)
-Route::prefix('dashboard')->middleware('auth')->controller(DashboardController::class)->group(function () {
+Route::middleware('auth')->controller(DashboardController::class)->group(function () {
     Route::get('/', 'home')->name('dashboard');
     Route::get('/billing', 'billing')->name('billing');
     Route::get('/profile', 'profile')->name('profile');
